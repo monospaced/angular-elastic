@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-gb" data-ng-app="monospaced.elastic" id="ng-app">
+<head>
+  <meta charset="utf-8">
+  <title>Angular Elastic</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="//necolas.github.io/normalize.css/2.1.1/normalize.css">
+  <style>
+    html {
+      background: #e7f3ff;
+      color: #1c000e;
+      text-shadow: 0 1px 0 #fff;
+    }
+    body {
+      margin: 8px auto;
+      max-width: 90%;
+      width: 480px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-weight: normal;
+      font-size: 30px;
+    }
+    a {
+      color: #0074e7;
+      text-decoration: none;
+      -webkit-transition: all 250ms ease-in-out;
+         -moz-transition: all 250ms ease-in-out;
+          -ms-transition: all 250ms ease-in-out;
+           -o-transition: all 250ms ease-in-out;
+              transition: all 250ms ease-in-out;
+    }
+    a:hover,
+    a:focus,
+    a:active {
+      color: #0067ce;
+      -webkit-transition: none;
+         -moz-transition: none;
+          -ms-transition: none;
+           -o-transition: none;
+              transition: none;
+    }
+    textarea {
+      padding: 10px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Angular Elastic</h1>
+
+  <form>
+    <p>
+      <textarea data-msd-elastic>This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.</textarea>
+    </p>
+  </form>
+
+  <small>
+    <a href="https://github.com/monospaced/angular-elastic">https://github.com/monospaced/angular-elastic</a> <br>
+    <a href="http://monospaced.github.io/">Monospaced Labs</a>
+  </small>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+  <script src="elastic.js"></script>
+</body>
+</html>
