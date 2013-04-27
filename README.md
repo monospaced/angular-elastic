@@ -20,12 +20,12 @@ as class
       ...
     </textarea>
 
-Include the `elastic.js` script provided by this component in your app,  and add `monspaced.elastic` to your app’s dependencies.
+Include the `elastic.js` script provided by this component in your app, and add `monspaced.elastic` to your app’s dependencies.
 
 Install
 -------
 
-    bower install monospaced/angular-elastic
+    bower install angular-elastic
 
 Demo
 ----------------
