@@ -5,148 +5,146 @@
  */
 
 angular.module('monospaced.elastic', [])
-  .directive('msdElastic', ['$window', '$timeout', function($window, $timeout){
+  .directive('msdElastic', ['$timeout', '$window', function($timeout, $window){
     'use strict';
 
     return {
       restrict: 'A, C',
       link: function(scope, element){
 
-        /*
-         * setup
-         */
-
         // cache a reference to the DOM element
-        var domElm = element[0];
+        var $ta = element,
+            ta = element[0];
 
-        // ensure element is a textarea
-        if (domElm.nodeName !== 'TEXTAREA') {
+        // ensure appropriate element and brower support
+        if (ta.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
         }
 
         // set these properties before measuring dimensions
-        element.css({
+        $ta.css({
           'overflow': 'hidden',
-          'resize': 'none'
+          'overflow-y': 'hidden',
+          'word-wrap': 'break-word'
         });
 
-        var windowElm = angular.element($window),
-            domTwin = document.createElement('div'),
-            twin = angular.element(domTwin).css({
-              'position': 'absolute',
-              'top': '-10000px',
-              'left': '-10000px',
-              'white-space': 'pre-wrap',
-              'word-wrap': 'break-word'
-            }),
-            domElmStyle = getComputedStyle(domElm),
-            lineHeight = parseInt(domElmStyle.getPropertyValue('line-height'), 10) ||
-                         parseInt(domElmStyle.getPropertyValue('font-size'), 10),
-            minHeight = parseInt(domElmStyle.getPropertyValue('height'), 10) || lineHeight * 3,
-            maxHeight = parseInt(domElmStyle.getPropertyValue('max-height'), 10) || Number.MAX_VALUE,
-            targetHeight = 0,
-            properties = ['padding-right',
-                          'padding-left',
-                          'border-right-width',
-                          'border-right-style',
-                          'border-left-width',
-                          'border-left-style',
-                          'width',
-                          'font-weight',
-                          'font-size',
-                          'font-family',
-                          'line-height'];
+        var $win = angular.element($window),
+            $mirror = angular.element('<textarea tabindex="-1" style="position: absolute; ' +
+                                      'top: -999px; right: auto; bottom: auto; left: 0 ;' +
+                                      'overflow: hidden; -webkit-box-sizing: content-box; ' +
+                                      '-moz-box-sizing: content-box; box-sizing: content-box; ' +
+                                      'min-height: 0!important; height: 0!important; border: 0; ' +
+                                      'word-wrap: break-word;"/>').data('elastic', true),
+            mirror = $mirror[0],
+            taStyle = getComputedStyle(ta),
+            resize = taStyle.getPropertyValue('resize'),
+            borderBox = taStyle.getPropertyValue('box-sizing') === 'border-box' ||
+                        taStyle.getPropertyValue('-moz-box-sizing') === 'border-box' ||
+                        taStyle.getPropertyValue('-webkit-box-sizing') === 'border-box',
+            boxOuter = !borderBox ? {width: 0, height: 0} : {
+                          width: parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
+                                 parseInt(taStyle.getPropertyValue('padding-top'), 10) +
+                                 parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
+                                 parseInt(taStyle.getPropertyValue('border-bottom-width'), 10),
+                          height: parseInt(taStyle.getPropertyValue('border-right-width'), 10) +
+                                  parseInt(taStyle.getPropertyValue('padding-right'), 10) +
+                                  parseInt(taStyle.getPropertyValue('padding-left'), 10) +
+                                  parseInt(taStyle.getPropertyValue('border-left-width'), 10)
+                        },
+            minHeightValue = parseInt(taStyle.getPropertyValue('min-height'), 10),
+            minHeight = Math.max(minHeightValue, ta.offsetHeight) - boxOuter.height,
+            maxHeight = parseInt(taStyle.getPropertyValue('max-height'), 10),
+            mirrored,
+            active,
+            copyStyle = ['font-family',
+                         'font-fize',
+                         'font-weight',
+                         'font-style',
+                         'letter-spacing',
+                         'line-height',
+                         'text-transform',
+                         'word-spacing',
+                         'text-indent'];
+
+        // exit if elastic already applied (or is the mirror element)
+        if ($ta.data('elastic')) {
+          return;
+        }
 
         // Opera returns max-height of -1 if not set
-        if (maxHeight < 0) {
-          maxHeight = Number.MAX_VALUE;
+        maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
+
+        // append the mirror to the DOM
+        if (mirror.parentNode !== document.body) {
+          angular.element(document.body).append(mirror);
         }
 
-        // copy the essential styles from the textarea to the twin
-        var i = properties.length,
-            property;
-        while(i--){
-          property = properties[i].toString();
-          twin.css(property, domElmStyle.getPropertyValue(property));
-        }
-
-        // append the twin to the DOM
-        element.parent().append(twin);
+        // set resize and apply elastic
+        $ta.css({
+          'resize': (resize === 'none' || resize === 'vertical') ? 'none' : 'horizontal'
+        }).data('elastic', true);
 
         /*
          * methods
          */
 
-        function setTwinWidth(){
-          // textareas with width set in percent can change size on resize events
-          var curatedWidth = Math.floor(parseInt(domElm.offsetWidth, 10));
-
-          if (domTwin.offsetWidth !== curatedWidth) {
-            twin.css({
-              'width': curatedWidth + 'px'
-            });
-            stretch(true);
-          }
+        function initMirror(){
+          mirrored = ta;
+          mirror.className = 'elastic-mirror';
+          taStyle = getComputedStyle(ta);
+          angular.forEach(copyStyle, function(val){
+            mirror.style[val] = taStyle.getPropertyValue(val);
+          });
         }
 
-        function setElmHeight(height, overflow){
-          // apply the required textarea height
-          var curratedHeight = Math.floor(parseInt(height, 10));
+        function adjust() {
+          var width,
+              height,
+              overflow,
+              original;
 
-          if (domElm.offsetHeight !== curratedHeight) {
-            element.css({
-              'height': curratedHeight + 'px',
-              'overflow': overflow
-            });
+          if (mirrored !== ta) {
+            initMirror();
           }
-        }
 
-        function shrink(){
-          // remove the extra line required for smooth stretching
-          var twinHeight = domTwin.offsetHeight;
+          // active flag prevents actions in function from calling adjust again
+          if (!active) {
+            active = true;
+            mirror.value = ta.value;
+            mirror.style.overflowY = ta.style.overflowY;
+            original = parseInt(ta.style.height, 10);
 
-          if (twinHeight < maxHeight) {
-            if (twinHeight > minHeight) {
-              element.css({
-                'height': twinHeight + 'px'
-              });
-            } else {
-              element.css({
-                'height': minHeight + 'px'
-              });
+            // update width in case the original textarea width has changed
+            width = parseInt(taStyle.getPropertyValue('width'), 10) - boxOuter.width;
+            mirror.style.width = width + 'px';
+
+            height = mirror.scrollHeight;
+
+            if (height > maxHeight) {
+              height = maxHeight;
+              overflow = 'scroll';
+            } else if (height < minHeight) {
+              height = minHeight;
             }
+
+            height += boxOuter.height;
+            ta.style.overflowY = overflow || 'hidden';
+
+            if (original !== height) {
+              ta.style.height = height + 'px';
+            }
+
+            // small delay to prevent an infinite loop
+            $timeout(function(){
+              active = false;
+            }, 1);
+
           }
         }
 
-        function stretch(forced){
-          // stretch the textarea if required
-          var twinHeight,
-              twinContent = twin.html().replace(/<br>/ig, '<br />'),
-              elementContent = element.val().replace(/&/g, '&amp;')
-                                            .replace(/ {2}/g, '&nbsp;')
-                                            .replace(/<|>/g, '&gt;')
-                                            .replace(/\n/g, '<br />');
-
-          if (forced || elementContent + '&nbsp;' !== twinContent) {
-            // add extra white space so new rows are added when at the end of a row
-            twin.html(elementContent + '&nbsp;');
-
-            // measure the twin
-            twinHeight = domTwin.offsetHeight;
-
-            // compare twin height and textarea height
-            if (Math.abs((twinHeight + lineHeight) - domElm.offsetHeight) > 3) {
-              // textarea needs to stretch, find the required height
-              targetHeight = twinHeight + lineHeight;
-              if (targetHeight >= maxHeight) {
-                return setElmHeight(maxHeight, 'auto');
-              }
-              if (targetHeight <= minHeight) {
-                return setElmHeight(minHeight, 'hidden');
-              }
-              return setElmHeight(targetHeight, 'hidden');
-            }
-          }
+        function forceAdjust(){
+          active = false;
+          adjust();
         }
 
         /*
@@ -154,38 +152,25 @@ angular.module('monospaced.elastic', [])
          */
 
         // listen
-        element
-          .bind('keyup change cut paste', stretch)
-          .bind('input paste', function(){
-            // catch the browser paste event
-            $timeout(stretch, 250);
-          })
-          .bind('blur', shrink)
-          .bind('resize', setTwinWidth);
+        if ('onpropertychange' in ta && 'oninput' in ta) {
+          // IE9
+          ta['oninput'] = ta.onkeyup = adjust;
+        } else {
+          ta['oninput'] = adjust;
+        }
 
-        windowElm.bind('resize', setTwinWidth);
+        $win.bind('resize', forceAdjust);
 
-        // set dimensions
-        stretch();
-        shrink();
-
-        // apply animations only after setting dimenmsions
-        $timeout(function(){
-          element.css({
-            '-webkit-transition': 'height 50ms ease-in-out',
-               '-moz-transition': 'height 50ms ease-in-out',
-                 '-o-transition': 'height 50ms ease-in-out',
-                    'transition': 'height 50ms ease-in-out'
-          });
-        });
+        // in case textarea already contains text
+        adjust();
 
         /*
          * destroy
          */
 
         scope.$on('$destroy', function(){
-          twin.remove();
-          windowElm.unbind('resize', setTwinWidth);
+          $mirror.remove();
+          $win.unbind('resize', forceAdjust);
         });
       }
     };
