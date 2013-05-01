@@ -19,8 +19,8 @@ angular.module('monospaced.elastic', [])
         // cache a reference to the DOM element
         var domElm = element[0];
 
-        // ensure element is a textarea
-        if (domElm.nodeName !== 'TEXTAREA') {
+        // ensure appropriate element & browser support
+        if (domElm.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
         }
 
