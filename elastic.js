@@ -1,5 +1,5 @@
 /*
- * angular-elastic v0.0.3
+ * angular-elastic v1.0.0
  * (c) 2013 Monospaced http://monospaced.com
  * License: MIT
  */
@@ -10,14 +10,13 @@ angular.module('monospaced.elastic', [])
 
     return {
       restrict: 'A, C',
-      link: function(scope, element){
-
-        var animate = false;
+      link: function(scope, element, attrs){
 
         // cache a reference to the DOM element
         var ta = element[0],
             $ta = element;
 
+        // ensure the element is a textarea, and browser is > IE8
         if (ta.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
         }
@@ -29,7 +28,13 @@ angular.module('monospaced.elastic', [])
           'word-wrap': 'break-word'
         });
 
-        var $win = angular.element($window),
+        // force text reflow
+        var text = ta.value;
+        ta.value = '';
+        ta.value = text;
+
+        var append = attrs.msdElastic === '\\n' ? '\n' : attrs.msdElastic,
+            $win = angular.element($window),
             $mirror = angular.element('<textarea tabindex="-1" style="position: absolute; ' +
                                       'top: -999px; right: auto; bottom: auto; left: 0 ;' +
                                       'overflow: hidden; -webkit-box-sizing: content-box; ' +
@@ -112,7 +117,7 @@ angular.module('monospaced.elastic', [])
           if (!active) {
             active = true;
 
-            mirror.value = ta.value + (animate ? '\n' : '');
+            mirror.value = ta.value + append; // optional whitespace to improve animation
             mirror.style.overflowY = ta.style.overflowY;
 
             taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
@@ -168,18 +173,6 @@ angular.module('monospaced.elastic', [])
 
         // in case textarea already contains text
         adjust();
-
-        // apply animations only after adjusting to text
-        if (animate) {
-          $timeout(function(){
-            $ta.css({
-              '-webkit-transition': 'height 50ms ease-in-out',
-                 '-moz-transition': 'height 50ms ease-in-out',
-                   '-o-transition': 'height 50ms ease-in-out',
-                      'transition': 'height 50ms ease-in-out'
-            });
-          });
-        }
 
         /*
          * destroy

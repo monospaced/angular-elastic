@@ -42,6 +42,12 @@
       padding: 10px;
       width:  300px;
     }
+    .animate:focus {
+      -webkit-transition: height 50ms ease-in-out;
+         -moz-transition: height 50ms ease-in-out;
+           -o-transition: height 50ms ease-in-out;
+              transition: height 50ms ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +56,10 @@
 
   <form>
     <p>
-      <textarea data-msd-elastic>This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.</textarea>
+      <textarea data-msd-elastic="">This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.</textarea>
+    </p>
+    <p>
+      <textarea data-msd-elastic="\n" class="animate">Elastic with a CSS transition. Try typing something...</textarea>
     </p>
   </form>
 
