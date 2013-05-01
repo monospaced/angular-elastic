@@ -35,7 +35,7 @@ Install
 
     bower install angular-elastic
 
-Include the `elastic.js` script provided by this component in your app, and add `monspaced.elastic` to your app’s dependencies.
+Include the `elastic.js` script provided by this component in your app, and add `monospaced.elastic` to your app’s dependencies.
 
 Support
 -------
