@@ -12,12 +12,11 @@ angular.module('monospaced.elastic', [])
       restrict: 'A, C',
       link: function(scope, element){
 
-        var animate = false;
-
         // cache a reference to the DOM element
-        var ta = element[0],
-            $ta = element;
+        var $ta = element,
+            ta = element[0];
 
+        // ensure appropriate element and brower support
         if (ta.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
         }
@@ -34,8 +33,8 @@ angular.module('monospaced.elastic', [])
                                       'top: -999px; right: auto; bottom: auto; left: 0 ;' +
                                       'overflow: hidden; -webkit-box-sizing: content-box; ' +
                                       '-moz-box-sizing: content-box; box-sizing: content-box; ' +
-                                      'min-height: 0!important; height: 0!important; padding: 0;' +
-                                      'word-wrap: break-word; border: 0;"/>').data('elastic', true),
+                                      'min-height: 0!important; height: 0!important; border: 0; ' +
+                                      'word-wrap: break-word;padding: 0 !important;"/>').data('elastic', true),
             mirror = $mirror[0],
             taStyle = getComputedStyle(ta),
             resize = taStyle.getPropertyValue('resize'),
@@ -75,7 +74,7 @@ angular.module('monospaced.elastic', [])
         // Opera returns max-height of -1 if not set
         maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
-        // append mirror to the DOM
+        // append the mirror to the DOM
         if (mirror.parentNode !== document.body) {
           angular.element(document.body).append(mirror);
         }
@@ -91,7 +90,7 @@ angular.module('monospaced.elastic', [])
 
         function initMirror(){
           mirrored = ta;
-          // copy the essential styles from the textarea to the mirror
+          mirror.className = 'elastic-mirror';
           taStyle = getComputedStyle(ta);
           angular.forEach(copyStyle, function(val){
             mirror.style[val] = taStyle.getPropertyValue(val);
@@ -99,10 +98,10 @@ angular.module('monospaced.elastic', [])
         }
 
         function adjust() {
-          var taHeight,
-              mirrorHeight,
-              width,
-              overflow;
+          var width,
+              height,
+              overflow,
+              original;
 
           if (mirrored !== ta) {
             initMirror();
@@ -111,32 +110,28 @@ angular.module('monospaced.elastic', [])
           // active flag prevents actions in function from calling adjust again
           if (!active) {
             active = true;
-
-            mirror.value = ta.value + (animate ? '\n' : '');
+            mirror.value = ta.value;
             mirror.style.overflowY = ta.style.overflowY;
+            original = parseInt(ta.style.height, 10);
 
-            taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
-
-            // update mirror width in case the textarea width has changed
-            width = parseInt(borderBox ?
-                             ta.offsetWidth :
-                             getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
+            // update width in case the original textarea width has changed
+            width = parseInt(taStyle.getPropertyValue('width'), 10) - boxOuter.width;
             mirror.style.width = width + 'px';
 
-            mirrorHeight = mirror.scrollHeight;
+            height = mirror.scrollHeight;
 
-            if (mirrorHeight > maxHeight) {
-              mirrorHeight = maxHeight;
+            if (height > maxHeight) {
+              height = maxHeight;
               overflow = 'scroll';
-            } else if (mirrorHeight < minHeight) {
-              mirrorHeight = minHeight;
+            } else if (height < minHeight) {
+              height = minHeight;
             }
-            mirrorHeight += boxOuter.height;
 
+            height += boxOuter.height;
             ta.style.overflowY = overflow || 'hidden';
 
-            if (taHeight !== mirrorHeight) {
-              ta.style.height = mirrorHeight + 'px';
+            if (original !== height) {
+              ta.style.height = height + 'px';
             }
 
             // small delay to prevent an infinite loop
@@ -168,18 +163,6 @@ angular.module('monospaced.elastic', [])
 
         // in case textarea already contains text
         adjust();
-
-        // apply animations only after adjusting to text
-        if (animate) {
-          $timeout(function(){
-            $ta.css({
-              '-webkit-transition': 'height 50ms ease-in-out',
-                 '-moz-transition': 'height 50ms ease-in-out',
-                   '-o-transition': 'height 50ms ease-in-out',
-                      'transition': 'height 50ms ease-in-out'
-            });
-          });
-        }
 
         /*
          * destroy
