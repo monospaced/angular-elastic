@@ -12,8 +12,10 @@ angular.module('monospaced.elastic', [])
       restrict: 'A, C',
       link: function(scope, element){
 
-        // cache a reference to the DOM element
+        var animate = false;
+
         var $ta = element,
+            // cache a reference to the DOM element
             ta = element[0];
 
         // ensure appropriate element and brower support
@@ -33,8 +35,8 @@ angular.module('monospaced.elastic', [])
                                       'top: -999px; right: auto; bottom: auto; left: 0 ;' +
                                       'overflow: hidden; -webkit-box-sizing: content-box; ' +
                                       '-moz-box-sizing: content-box; box-sizing: content-box; ' +
-                                      'min-height: 0!important; height: 0!important; border: 0; ' +
-                                      'word-wrap: break-word;"/>').data('elastic', true),
+                                      'min-height: 0!important; height: 0!important; padding: 0;' +
+                                      'word-wrap: break-word; border: 0;"/>').data('elastic', true),
             mirror = $mirror[0],
             taStyle = getComputedStyle(ta),
             resize = taStyle.getPropertyValue('resize'),
@@ -90,7 +92,6 @@ angular.module('monospaced.elastic', [])
 
         function initMirror(){
           mirrored = ta;
-          mirror.className = 'elastic-mirror';
           taStyle = getComputedStyle(ta);
           angular.forEach(copyStyle, function(val){
             mirror.style[val] = taStyle.getPropertyValue(val);
@@ -110,12 +111,14 @@ angular.module('monospaced.elastic', [])
           // active flag prevents actions in function from calling adjust again
           if (!active) {
             active = true;
-            mirror.value = ta.value;
+            mirror.value = ta.value + (animate ? '\n' : '');
             mirror.style.overflowY = ta.style.overflowY;
-            original = parseInt(ta.style.height, 10);
+            original = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
 
             // update width in case the original textarea width has changed
-            width = parseInt(taStyle.getPropertyValue('width'), 10) - boxOuter.width;
+            width = parseInt(borderBox ?
+                             ta.offsetWidth :
+                             getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
             mirror.style.width = width + 'px';
 
             height = mirror.scrollHeight;
@@ -163,6 +166,17 @@ angular.module('monospaced.elastic', [])
 
         // in case textarea already contains text
         adjust();
+
+        if (animate) {
+          $timeout(function(){
+            $ta.css({
+              '-webkit-transition': 'height 50ms ease-in-out',
+                 '-moz-transition': 'height 50ms ease-in-out',
+                   '-o-transition': 'height 50ms ease-in-out',
+                      'transition': 'height 50ms ease-in-out'
+            });
+        });
+        }
 
         /*
          * destroy
