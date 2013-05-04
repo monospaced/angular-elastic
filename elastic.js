@@ -16,7 +16,7 @@ angular.module('monospaced.elastic', [])
         var ta = element[0],
             $ta = element;
 
-        // ensure the element is a textarea, and browser is > IE8
+        // ensure the element is a textarea, and browser is capable
         if (ta.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
         }
