@@ -63,7 +63,7 @@ angular.module('monospaced.elastic', [])
             mirrored,
             active,
             copyStyle = ['font-family',
-                         'font-fize',
+                         'font-size',
                          'font-weight',
                          'font-style',
                          'letter-spacing',
