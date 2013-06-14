@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-gb" data-ng-app="monospaced.elastic" id="ng-app">
+<html lang="en-gb" data-ng-app="elasticDemo" id="ng-app">
 <head>
   <meta charset="utf-8">
   <title>Angular Elastic</title>
@@ -38,10 +38,18 @@
            -o-transition: none;
               transition: none;
     }
+    form[name] {
+      margin: 0 0 8px;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
     textarea {
       padding: 10px;
-      width:  300px;
+      width: 300px;
       max-width: 90%;
+    }
+    textarea.ng-pristine {
+      height: auto !important;
     }
     .animate:focus {
       -webkit-transition: height 50ms ease-in-out;
@@ -57,10 +65,19 @@
 
   <form>
     <p>
-      <textarea data-msd-elastic></textarea>
+      <textarea data-msd-elastic>This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.</textarea>
     </p>
     <p>
       <textarea data-msd-elastic="\n" class="animate">Elastic with a CSS transition. Try typing something...</textarea>
+    </p>
+  </form>
+
+  <form name="formTest" data-ng-submit="submit()" data-ng-controller="formTestController">
+    <p>
+      <textarea data-msd-elastic data-ng-model="text"></textarea>
+    </p>
+    <p>
+      <input type="submit">
     </p>
   </form>
 
@@ -69,7 +86,16 @@
     <a href="http://monospaced.github.io/">Monospaced Labs</a>
   </small>
 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
   <script src="elastic.js"></script>
+  <script>
+    angular.module('elasticDemo', ['monospaced.elastic'])
+      .controller('formTestController', ['$scope', function($scope){
+        $scope.submit = function(){
+          $scope.text = '';
+          $scope.formTest.$setPristine();
+        };
+      }]);
+  </script>
 </body>
 </html>
