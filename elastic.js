@@ -48,14 +48,14 @@ angular.module('monospaced.elastic', [])
                         taStyle.getPropertyValue('-moz-box-sizing') === 'border-box' ||
                         taStyle.getPropertyValue('-webkit-box-sizing') === 'border-box',
             boxOuter = !borderBox ? {width: 0, height: 0} : {
-                          height: parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
-                                 parseInt(taStyle.getPropertyValue('padding-top'), 10) +
-                                 parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
-                                 parseInt(taStyle.getPropertyValue('border-bottom-width'), 10),
                           width: parseInt(taStyle.getPropertyValue('border-right-width'), 10) +
                                   parseInt(taStyle.getPropertyValue('padding-right'), 10) +
                                   parseInt(taStyle.getPropertyValue('padding-left'), 10) +
-                                  parseInt(taStyle.getPropertyValue('border-left-width'), 10)
+                                  parseInt(taStyle.getPropertyValue('border-left-width'), 10),
+                          height: parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
+                                 parseInt(taStyle.getPropertyValue('padding-top'), 10) +
+                                 parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
+                                 parseInt(taStyle.getPropertyValue('border-bottom-width'), 10)
                         },
             minHeightValue = parseInt(taStyle.getPropertyValue('min-height'), 10),
             heightValue = parseInt(taStyle.getPropertyValue('height'), 10),
