@@ -38,18 +38,10 @@
            -o-transition: none;
               transition: none;
     }
-    form[name] {
-      margin: 0 0 8px;
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-    }
     textarea {
       padding: 10px;
       width: 300px;
       max-width: 90%;
-    }
-    textarea.ng-pristine {
-      height: auto !important;
     }
     .animate:focus {
       -webkit-transition: height 50ms ease-in-out;
@@ -59,25 +51,20 @@
     }
   </style>
 </head>
-<body>
+<body data-ng-controller="elasticDemoController">
 
   <h1>Angular Elastic</h1>
 
-  <form>
+  <form data-ng-submit="submit()">
     <p>
-      <textarea data-msd-elastic>This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.</textarea>
+      <textarea data-msd-elastic data-ng-model="foo"></textarea>
+    </p>
+    <small><a href data-ng-click="foo = 'Model changed'">Change model</a></small>
+    <p>
+      <textarea data-msd-elastic="\n" class="animate" data-ng-model="bar"></textarea>
     </p>
     <p>
-      <textarea data-msd-elastic="\n" class="animate">Elastic with a CSS transition. Try typing something...</textarea>
-    </p>
-  </form>
-
-  <form name="formTest" data-ng-submit="submit()" data-ng-controller="formTestController">
-    <p>
-      <textarea data-msd-elastic data-ng-model="text"></textarea>
-    </p>
-    <p>
-      <input type="submit">
+      <input type="submit" value="Submit and reset">
     </p>
   </form>
 
@@ -90,10 +77,14 @@
   <script src="elastic.js"></script>
   <script>
     angular.module('elasticDemo', ['monospaced.elastic'])
-      .controller('formTestController', ['$scope', function($scope){
+      .controller('elasticDemoController', ['$scope', function($scope){
+        'use strict';
+
+        $scope.foo = 'This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.';
+        $scope.bar = 'Elastic with a CSS transition. Try typing something...';
+
         $scope.submit = function(){
-          $scope.text = '';
-          $scope.formTest.$setPristine();
+          $scope.bar = '';
         };
       }]);
   </script>

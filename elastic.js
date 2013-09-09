@@ -9,8 +9,9 @@ angular.module('monospaced.elastic', [])
     'use strict';
 
     return {
+      require: 'ngModel',
       restrict: 'A, C',
-      link: function(scope, element, attrs){
+      link: function(scope, element, attrs, ngModel){
 
         // cache a reference to the DOM element
         var ta = element[0],
@@ -172,8 +173,11 @@ angular.module('monospaced.elastic', [])
 
         $win.bind('resize', forceAdjust);
 
-        // in case textarea already contains text
-        $timeout(adjust);
+        scope.$watch(function(){
+          return ngModel.$modelValue;
+        }, function(newValue){
+          forceAdjust();
+        });
 
         /*
          * destroy

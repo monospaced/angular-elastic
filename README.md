@@ -10,23 +10,23 @@ Usage
 
 as attribute
 
-    <textarea msd-elastic>
+    <textarea msd-elastic ng-model="foo">
       ...
     </textarea>
 
 as class
 
-    <textarea class="msd-elastic">
+    <textarea class="msd-elastic" ng-model="bar">
       ...
     </textarea>
 
 optionally append whitespace to the end of the height calculation (an extra newline improves the apperance when animating)
 
-    <textarea msd-elastic="\n">
+    <textarea msd-elastic="\n" ng-model="foo">
       ...
     </textarea>
 
-    <textarea class="msd-elastic: \n;">
+    <textarea class="msd-elastic: \n;" ng-model="bar">
       ...
     </textarea>
 
