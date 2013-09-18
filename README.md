@@ -30,6 +30,12 @@ optionally append whitespace to the end of the height calculation (an extra newl
       ...
     </textarea>
 
+or configure whitespace globally
+
+    app.config(['msdElasticConfig', function(config) {
+      config.append = '\n\n';
+    }])
+
 Install
 -------
 
