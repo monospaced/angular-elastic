@@ -1,11 +1,16 @@
 /*
- * angular-elastic v2.0.0
+ * angular-elastic v2.1.0
  * (c) 2013 Monospaced http://monospaced.com
  * License: MIT
  */
 
 angular.module('monospaced.elastic', [])
-  .directive('msdElastic', ['$timeout', '$window', function($timeout, $window){
+
+  .constant('msdElasticConfig', {
+    append: ''
+  })
+
+  .directive('msdElastic', ['$timeout', '$window', 'msdElasticConfig', function($timeout, $window, config) {
     'use strict';
 
     return {
@@ -34,7 +39,8 @@ angular.module('monospaced.elastic', [])
         ta.value = '';
         ta.value = text;
 
-        var append = attrs.msdElastic === '\\n' ? '\n' : attrs.msdElastic,
+        var appendText = attrs.msdElastic || config.append,
+            append = appendText === '\\n' ? '\n' : appendText,
             $win = angular.element($window),
             $mirror = angular.element('<textarea tabindex="-1" style="position: absolute; ' +
                                       'top: -999px; right: auto; bottom: auto; left: 0 ;' +
