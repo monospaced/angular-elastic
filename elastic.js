@@ -131,7 +131,8 @@ angular.module('monospaced.elastic', [])
             taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
 
             // update mirror width in case the textarea width has changed
-            width = parseInt(borderBox ?
+            // If the offsetWidth is zero it could be that the textbox is hidden.  Use the computed width instead.
+            width = parseInt(borderBox && ta.offsetWidth != 0 ?
                              ta.offsetWidth :
                              getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
             mirror.style.width = width + 'px';
