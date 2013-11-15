@@ -49,6 +49,9 @@
            -o-transition: height 50ms ease-in-out;
               transition: height 50ms ease-in-out;
     }
+    #first {
+      font-size: 30px;
+    }
   </style>
 </head>
 <body data-ng-controller="elasticDemoController">
@@ -57,7 +60,7 @@
 
   <form data-ng-submit="submit()">
     <p>
-      <textarea data-msd-elastic data-ng-model="foo"></textarea>
+      <textarea data-msd-elastic data-ng-model="foo" id="first"></textarea>
     </p>
     <small><a href data-ng-click="foo = 'Model changed'">Change model</a></small>
     <p>

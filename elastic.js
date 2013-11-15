@@ -42,12 +42,13 @@ angular.module('monospaced.elastic', [])
         var appendText = attrs.msdElastic || config.append,
             append = appendText === '\\n' ? '\n' : appendText,
             $win = angular.element($window),
-            $mirror = angular.element('<textarea tabindex="-1" style="position: absolute; ' +
-                                      'top: -999px; right: auto; bottom: auto; left: 0 ;' +
-                                      'overflow: hidden; -webkit-box-sizing: content-box; ' +
-                                      '-moz-box-sizing: content-box; box-sizing: content-box; ' +
-                                      'min-height: 0!important; height: 0!important; padding: 0;' +
-                                      'word-wrap: break-word; border: 0;"/>').data('elastic', true),
+            mirrorStyle = 'position: absolute; top: -999px; right: auto; bottom: auto; left: 0 ;' +
+                          'overflow: hidden; -webkit-box-sizing: content-box;' +
+                          '-moz-box-sizing: content-box; box-sizing: content-box;' +
+                          'min-height: 0 !important; height: 0 !important; padding: 0;' +
+                          'word-wrap: break-word; border: 0;',
+            $mirror = angular.element('<textarea tabindex="-1" ' +
+                                      'style="' + mirrorStyle + '"/>').data('elastic', true),
             mirror = $mirror[0],
             taStyle = getComputedStyle(ta),
             resize = taStyle.getPropertyValue('resize'),
@@ -107,8 +108,9 @@ angular.module('monospaced.elastic', [])
           // copy the essential styles from the textarea to the mirror
           taStyle = getComputedStyle(ta);
           angular.forEach(copyStyle, function(val){
-            mirror.style[val] = taStyle.getPropertyValue(val);
+            mirrorStyle += val + ':' + taStyle.getPropertyValue(val) + ';';
           });
+          mirror.setAttribute('style', mirrorStyle);
         }
 
         function adjust() {
@@ -134,7 +136,9 @@ angular.module('monospaced.elastic', [])
             width = parseInt(getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
             mirror.style.width = width + 'px';
 
+            mirror.overflow = 'scroll';
             mirrorHeight = mirror.scrollHeight;
+            mirror.overflow = 'hidden';
 
             if (mirrorHeight > maxHeight) {
               mirrorHeight = maxHeight;
