@@ -132,7 +132,6 @@ angular.module('monospaced.elastic', [])
 
             // update mirror width in case the textarea width has changed
             width = parseInt(getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
-            console.log(boxOuter.width, width);
             mirror.style.width = width + 'px';
 
             mirrorHeight = mirror.scrollHeight;
