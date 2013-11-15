@@ -136,9 +136,7 @@ angular.module('monospaced.elastic', [])
             width = parseInt(getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
             mirror.style.width = width + 'px';
 
-            mirror.overflow = 'scroll';
             mirrorHeight = mirror.scrollHeight;
-            mirror.overflow = 'hidden';
 
             if (mirrorHeight > maxHeight) {
               mirrorHeight = maxHeight;
