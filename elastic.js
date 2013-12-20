@@ -150,6 +150,7 @@ angular.module('monospaced.elastic', [])
 
             if (taHeight !== mirrorHeight) {
               ta.style.height = mirrorHeight + 'px';
+              scope.$emit('elastic:resize', $ta);
             }
 
             // small delay to prevent an infinite loop
