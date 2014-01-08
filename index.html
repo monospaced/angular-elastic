@@ -60,11 +60,11 @@
 
   <form data-ng-submit="submit()">
     <p>
-      <textarea data-msd-elastic data-ng-model="foo" id="first"></textarea>
+      <textarea class="msd-elastic" data-ng-model="foo" id="first"></textarea>
     </p>
     <small><a href data-ng-click="foo = 'Model changed'">Change model</a></small>
     <p>
-      <textarea data-msd-elastic="\n" class="animate" data-ng-model="bar"></textarea>
+      <textarea class="animate msd-elastic: \n;" data-ng-model="bar"></textarea>
     </p>
     <p>
       <input type="submit" value="Submit and reset">
@@ -76,7 +76,7 @@
     <a href="http://monospaced.github.io/">Monospaced Labs</a>
   </small>
 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
   <script src="elastic.js"></script>
   <script>
     angular.module('elasticDemo', ['monospaced.elastic'])
