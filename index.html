@@ -60,8 +60,9 @@
 
   <form data-ng-submit="submit()">
     <p>
-      <textarea class="msd-elastic" data-ng-model="foo" id="first"></textarea>
+      <textarea class="msd-elastic" data-ng-model="foo" id="first" data-ng-show="reveal"></textarea>
     </p>
+    <small data-ng-show="!reveal"><a href data-ng-click="reveal = true">Reveal hidden</a> | </small>
     <small><a href data-ng-click="foo = 'Model changed'">Change model</a></small>
     <p>
       <textarea class="animate msd-elastic: \n;" data-ng-model="bar"></textarea>
@@ -83,7 +84,7 @@
       .controller('elasticDemoController', ['$scope', function($scope){
         'use strict';
 
-        $scope.foo = 'This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see.';
+        $scope.foo = 'This textarea is going to grow when you fill it with text. Just type a few more words in it and you will see. This textarea is going to grow when you fill it with text.';
         $scope.bar = 'Elastic with a CSS transition. Try typing something...';
 
         $scope.submit = function(){
