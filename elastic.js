@@ -186,6 +186,8 @@ angular.module('monospaced.elastic', [])
           forceAdjust();
         });
 
+        $timeout(adjust);
+
         /*
          * destroy
          */
