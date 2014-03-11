@@ -186,6 +186,10 @@ angular.module('monospaced.elastic', [])
           forceAdjust();
         });
 
+        scope.$on("elastic:adjust", function () {
+          forceAdjust();
+        });
+
         $timeout(adjust);
 
         /*

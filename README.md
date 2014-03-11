@@ -53,6 +53,19 @@ Demo
 
 [monospaced.github.io/angular-elastic](http://monospaced.github.io/angular-elastic)
 
+How it works
+------------
+
+By creating a hidden textarea that mirrors the textarea to which the directive was applied, Angular Elastic can measure the required height and adjust the textarea accordingly. Adjustments are done on:
+
+* Keystroke events
+* Window resize events
+* Model changes
+
+This works well in most cases with no additional code required other than described in the Usage section above. However, it may occur that the adjustment must be invoked manually at a time that is not covered by the events listed above. E.g. textareas with the style `display: none;` may not have a valid width  in Safari which produces incorrect adjustments. In this case the adjustment needs to be invoked once these textareas become visible. For that Angular Elastic listens to the `elastic:adjust` event on its scope. To invoke the adjustment for all textareas covered by Angular Elastic use:
+
+    $rootScope.$broadcast('elastic:adjust');
+
 Inspiration
 ----------------
 
