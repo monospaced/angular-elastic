@@ -16,7 +16,7 @@ angular.module('monospaced.elastic', [])
     return {
       require: 'ngModel',
       restrict: 'A, C',
-      link: function(scope, element, attrs, ngModel){
+      link: function(scope, element, attrs, ngModel) {
 
         // cache a reference to the DOM element
         var ta = element[0],
@@ -103,11 +103,11 @@ angular.module('monospaced.elastic', [])
          * methods
          */
 
-        function initMirror(){
+        function initMirror() {
           mirrored = ta;
           // copy the essential styles from the textarea to the mirror
           taStyle = getComputedStyle(ta);
-          angular.forEach(copyStyle, function(val){
+          angular.forEach(copyStyle, function(val) {
             mirrorStyle += val + ':' + taStyle.getPropertyValue(val) + ';';
           });
           mirror.setAttribute('style', mirrorStyle);
@@ -154,14 +154,14 @@ angular.module('monospaced.elastic', [])
             }
 
             // small delay to prevent an infinite loop
-            $timeout(function(){
+            $timeout(function() {
               active = false;
             }, 1);
 
           }
         }
 
-        function forceAdjust(){
+        function forceAdjust() {
           active = false;
           adjust();
         }
@@ -180,13 +180,13 @@ angular.module('monospaced.elastic', [])
 
         $win.bind('resize', forceAdjust);
 
-        scope.$watch(function(){
+        scope.$watch(function() {
           return ngModel.$modelValue;
-        }, function(newValue){
+        }, function(newValue) {
           forceAdjust();
         });
 
-        scope.$on("elastic:adjust", function () {
+        scope.$on('elastic:adjust', function() {
           forceAdjust();
         });
 
@@ -196,7 +196,7 @@ angular.module('monospaced.elastic', [])
          * destroy
          */
 
-        scope.$on('$destroy', function(){
+        scope.$on('$destroy', function() {
           $mirror.remove();
           $win.unbind('resize', forceAdjust);
         });
