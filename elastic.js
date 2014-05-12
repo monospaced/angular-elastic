@@ -186,6 +186,12 @@ angular.module('monospaced.elastic', [])
           forceAdjust();
         });
 
+        scope.$watch(function() {
+          return element.width();
+        }, function(newValue) {
+          forceAdjust();
+        });
+
         scope.$on('elastic:adjust', function() {
           forceAdjust();
         });
