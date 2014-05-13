@@ -51,7 +51,9 @@ __Modern browsers__ only—Internet Explorer 6, 7 & 8 retain their default texta
 Demo
 ----------------
 
-[monospaced.github.io/angular-elastic](http://monospaced.github.io/angular-elastic)
+* [monospaced.github.io/angular-elastic](http://monospaced.github.io/angular-elastic)
+* [plunker](http://plnkr.co/edit/9y6YLriAwsK9hqdu72WT?p=preview)
+
 
 How it works
 ------------
