@@ -1,6 +1,6 @@
 /*
- * angular-elastic v2.3.2
- * (c) 2013 Monospaced http://monospaced.com
+ * angular-elastic v2.3.3
+ * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
 
