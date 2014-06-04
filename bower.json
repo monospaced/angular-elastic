@@ -1,6 +1,6 @@
 {
   "name": "angular-elastic",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "main": "elastic.js",
   "ignore": [
     "**/.*",

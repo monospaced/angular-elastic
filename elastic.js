@@ -1,5 +1,5 @@
 /*
- * angular-elastic v2.3.3
+ * angular-elastic v2.3.4
  * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
@@ -133,10 +133,11 @@ angular.module('monospaced.elastic', [])
 
             taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
 
-            // update mirror width in case the textarea width has changed
-            // (after making sure getComputedStyle has returned a readable 'used value' pixel width)
             taComputedStyleWidth = getComputedStyle(ta).getPropertyValue('width');
+
+            // ensure getComputedStyle has returned a readable 'used value' pixel width
             if (taComputedStyleWidth.substr(taComputedStyleWidth.length - 2, 2) === "px") {
+              // update mirror width in case the textarea width has changed
               width = parseInt(taComputedStyleWidth, 10) - boxOuter.width;
               mirror.style.width = width + 'px';
             }
