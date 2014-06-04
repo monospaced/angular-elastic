@@ -115,6 +115,7 @@ angular.module('monospaced.elastic', [])
 
         function adjust() {
           var taHeight,
+              taComputedStyleWidth,
               mirrorHeight,
               width,
               overflow;
@@ -133,8 +134,12 @@ angular.module('monospaced.elastic', [])
             taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
 
             // update mirror width in case the textarea width has changed
-            width = parseInt(getComputedStyle(ta).getPropertyValue('width'), 10) - boxOuter.width;
-            mirror.style.width = width + 'px';
+            // (after making sure getComputedStyle has returned a readable 'used value' pixel width)
+            taComputedStyleWidth = getComputedStyle(ta).getPropertyValue('width');
+            if (taComputedStyleWidth.substr(taComputedStyleWidth.length - 2, 2) === "px") {
+              width = parseInt(taComputedStyleWidth, 10) - boxOuter.width;
+              mirror.style.width = width + 'px';
+            }
 
             mirrorHeight = mirror.scrollHeight;
 
