@@ -41,7 +41,7 @@ angular.module('monospaced.elastic', [])
           ta.value = '';
           ta.value = text;
 
-          var append = attrs.msdElastic ? attrs.msdElastic.replace('\\n', '\n') : config.append,
+          var append = attrs.msdElastic ? attrs.msdElastic.replace(/\\n/g, '\n') : config.append,
               $win = angular.element($window),
               mirrorStyle = 'position: absolute; top: -999px; right: auto; bottom: auto;' +
                             'left: 0; overflow: hidden; -webkit-box-sizing: content-box;' +
