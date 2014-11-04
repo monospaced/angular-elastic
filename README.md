@@ -43,7 +43,20 @@ Install
 
     npm install angular-elastic
 
-Include the `elastic.js` script provided by this component in your app, and add `monospaced.elastic` to your app’s dependencies.
+Include the `elastic.js` script provided by this component in your app.
+If you're using bower you can just copy this line.
+```
+<script src="bower_components/angular-elastic/elastic.js"></script>
+````
+
+Make sure to add `monospaced.elastic` to your app’s module dependencies.
+
+```
+angular
+  .module('pripareApp', [
+    'monospaced.elastic'
+  ])
+````
 
 Support
 -------
