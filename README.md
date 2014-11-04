@@ -53,7 +53,7 @@ Make sure to add `monospaced.elastic` to your app’s module dependencies.
 
 ```
 angular
-  .module('pripareApp', [
+  .module('yourApp', [
     'monospaced.elastic'
   ])
 ````
