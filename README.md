@@ -70,6 +70,18 @@ This works well in most cases with no additional code required other than descri
 
     $rootScope.$broadcast('elastic:adjust');
 
+### Listen for adjustment event
+
+You can subscribe to a method that gets invoked everytime the textarea is adjusted.
+
+    <textarea class="msd-elastic" ng-model="bar" ng-adjust="myCallbackFnInScope()">
+        ...
+    </textarea>
+
+Note that `myCallbackFnInScope` must be available in your controllers scope.
+Check the `index.html` file for an easy example.
+
+
 Inspiration
 ----------------
 
