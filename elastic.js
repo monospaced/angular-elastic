@@ -213,4 +213,23 @@ angular.module('monospaced.elastic', [])
         }
       };
     }
-  ]);
+  ]).directive('ngAdjust', [function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+
+          var el = angular.element(element);
+
+          scope.$watch(function() {
+            return element.css('height');
+          }, function(newVal, oldVal) {
+
+            // Call defined function
+            if(newVal) {
+              scope.$eval(attrs.ngAdjust);
+            }
+            
+          });
+        }
+      };
+    }]);
