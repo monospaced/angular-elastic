@@ -155,8 +155,6 @@ angular.module('monospaced.elastic', [])
               }
               mirrorHeight += boxOuter.height;
 
-              console.log(mirrorHeight);
-
               ta.style.overflowY = overflow || 'hidden';
 
               if (taHeight !== mirrorHeight) {
