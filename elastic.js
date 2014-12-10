@@ -76,6 +76,7 @@ angular.module('monospaced.elastic', [])
                            'font-size',
                            'font-weight',
                            'font-style',
+                           'padding',
                            'letter-spacing',
                            'line-height',
                            'text-transform',
