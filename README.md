@@ -33,7 +33,7 @@ optionally append whitespace to the end of the height calculation (an extra newl
 or configure whitespace globally
 
     app.config(['msdElasticConfig', function(msdElasticConfig) {
-      msdElasticConfig.append = '\n';
+      msdElasticConfig.append = '\n\n';
     }])
 
 Install
