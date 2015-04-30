@@ -19,6 +19,10 @@ angular.module('monospaced.elastic', [])
         require: 'ngModel',
         restrict: 'A, C',
         link: function(scope, element, attrs, ngModel) {
+          // Check that the attribute is not set
+          if (attrs.msdElastic === 'false') {
+            return;
+          }
 
           // cache a reference to the DOM element
           var ta = element[0],
