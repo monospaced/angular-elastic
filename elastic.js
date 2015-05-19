@@ -4,6 +4,10 @@
  * License: MIT
  */
 
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports){
+  module.exports = 'monospaced.elastic';
+}
+
 angular.module('monospaced.elastic', [])
 
   .constant('msdElasticConfig', {
