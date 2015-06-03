@@ -1,5 +1,5 @@
 /*
- * angular-elastic v2.4.2
+ * angular-elastic v2.4.3
  * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
@@ -157,8 +157,8 @@ angular.module('monospaced.elastic', [])
               ta.style.overflowY = overflow || 'hidden';
 
               if (taHeight !== mirrorHeight) {
+                scope.$emit('elastic:resize', $ta, taHeight, mirrorHeight);
                 ta.style.height = mirrorHeight + 'px';
-                scope.$emit('elastic:resize', $ta);
               }
 
               // small delay to prevent an infinite loop
