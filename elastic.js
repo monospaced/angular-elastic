@@ -164,7 +164,7 @@ angular.module('monospaced.elastic', [])
               // small delay to prevent an infinite loop
               $timeout(function() {
                 active = false;
-              }, 1);
+              }, 1, false);
 
             }
           }
@@ -199,7 +199,7 @@ angular.module('monospaced.elastic', [])
             forceAdjust();
           });
 
-          $timeout(adjust);
+          $timeout(adjust, 0, false);
 
           /*
            * destroy
