@@ -1,8 +1,14 @@
 /*
- * angular-elastic v2.4.2
+ * angular-elastic v2.5.0
  * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
+
+if (typeof module !== 'undefined' &&
+    typeof exports !== 'undefined' &&
+    module.exports === exports){
+  module.exports = 'monospaced.elastic';
+}
 
 angular.module('monospaced.elastic', [])
 
@@ -48,7 +54,7 @@ angular.module('monospaced.elastic', [])
                                 '-moz-box-sizing: content-box; box-sizing: content-box;' +
                                 'min-height: 0 !important; height: 0 !important; padding: 0;' +
                                 'word-wrap: break-word; border: 0;',
-              $mirror = angular.element('<textarea tabindex="-1" ' +
+              $mirror = angular.element('<textarea aria-hidden="true" tabindex="-1" ' +
                                         'style="' + mirrorInitStyle + '"/>').data('elastic', true),
               mirror = $mirror[0],
               taStyle = getComputedStyle(ta),
@@ -158,8 +164,8 @@ angular.module('monospaced.elastic', [])
               ta.style.overflowY = overflow || 'hidden';
 
               if (taHeight !== mirrorHeight) {
+                scope.$emit('elastic:resize', $ta, taHeight, mirrorHeight);
                 ta.style.height = mirrorHeight + 'px';
-                scope.$emit('elastic:resize', $ta);
               }
 
               // small delay to prevent an infinite loop

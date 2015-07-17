@@ -49,6 +49,9 @@
            -o-transition: height 50ms ease-in-out;
               transition: height 50ms ease-in-out;
     }
+    .msd-elastic {
+      max-height: 400px;
+    }
     #first {
       font-size: 30px;
     }
@@ -60,7 +63,7 @@
 
   <form data-ng-submit="submit()">
     <p>
-      <textarea class="msd-elastic" data-ng-model="foo" id="first" data-ng-show="show" ng-init="show = true" data-ng-controller="elasticCallbackController"></textarea>
+      <textarea class="msd-elastic" data-ng-model="foo" id="first" data-ng-show="show" data-ng-controller="elasticCallbackController"></textarea>
     </p>
     <small data-ng-show="show"><a href data-ng-click="show = false">Hide</a> | </small>
     <small data-ng-show="!show"><a href data-ng-click="show = true">Show</a> | </small>
@@ -91,6 +94,8 @@
         $scope.submit = function(){
           $scope.bar = '';
         };
+
+        $scope.show = true;
       }])
       .controller('elasticCallbackController', ['$scope', '$log', function($scope, $log){
         'use strict';
