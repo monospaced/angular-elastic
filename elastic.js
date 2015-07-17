@@ -48,7 +48,7 @@ angular.module('monospaced.elastic', [])
                                 '-moz-box-sizing: content-box; box-sizing: content-box;' +
                                 'min-height: 0 !important; height: 0 !important; padding: 0;' +
                                 'word-wrap: break-word; border: 0;',
-              $mirror = angular.element('<textarea tabindex="-1" ' +
+              $mirror = angular.element('<textarea aria-hidden="true" tabindex="-1" ' +
                                         'style="' + mirrorInitStyle + '"/>').data('elastic', true),
               mirror = $mirror[0],
               taStyle = getComputedStyle(ta),
