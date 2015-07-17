@@ -1,5 +1,5 @@
 /*
- * angular-elastic v2.4.2
+ * angular-elastic v2.5.0
  * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
