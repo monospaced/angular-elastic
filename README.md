@@ -36,6 +36,12 @@ or configure whitespace globally
       config.append = '\n\n';
     }])
 
+the directive also emits an `elastic:resize` event which you can listen for
+
+    $scope.$on('elastic:resize', function(event, element, oldHeight, newHeight) {
+      // do stuff
+    });
+
 Install
 -------
 
