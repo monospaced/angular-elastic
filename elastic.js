@@ -194,6 +194,11 @@ angular.module('monospaced.elastic', [])
 
           $win.bind('resize', forceAdjust);
 
+          attrs.$observe('msdElastic', function(newValue) {
+            append = newValue.replace(/\\n/g, '\n');
+            forceAdjust();
+          });
+
           scope.$watch(function() {
             return ngModel.$modelValue;
           }, function(newValue) {
