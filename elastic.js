@@ -84,6 +84,7 @@ angular.module('monospaced.elastic', [])
                            'font-style',
                            'letter-spacing',
                            'line-height',
+                           'padding',
                            'text-transform',
                            'word-spacing',
                            'text-indent'];
