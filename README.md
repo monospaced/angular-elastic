@@ -42,6 +42,15 @@ the directive also emits an `elastic:resize` event which you can listen for
       // do stuff
     });
 
+Single line textareas
+--------------
+
+Set the `rows` attribute to `1`, as browsers default to `2`.
+
+    <textarea rows="1" msd-elastic ng-model="foo">
+      ...
+    </textarea>
+
 Install
 -------
 
