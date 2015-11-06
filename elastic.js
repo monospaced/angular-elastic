@@ -37,7 +37,7 @@ angular.module('monospaced.elastic', [])
 
           // set these properties before measuring dimensions
           $ta.css({
-            'overflow': 'hidden',
+            'overflow': 'auto',
             'overflow-y': 'hidden',
             'word-wrap': 'break-word'
           });
@@ -86,7 +86,8 @@ angular.module('monospaced.elastic', [])
                            'line-height',
                            'text-transform',
                            'word-spacing',
-                           'text-indent'];
+                           'text-indent',
+                           'white-space'];
 
           // exit if elastic already applied (or is the mirror element)
           if ($ta.data('elastic')) {
