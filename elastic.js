@@ -163,8 +163,12 @@ angular.module('monospaced.elastic', [])
               ta.style.overflowY = overflow || 'hidden';
 
               if (taHeight !== mirrorHeight) {
-                scope.$emit('elastic:resize', $ta, taHeight, mirrorHeight);
-                ta.style.height = mirrorHeight + 'px';
+                var event = scope.$emit('elastic:resize', $ta, taHeight, mirrorHeight);
+                if(event.defaultPrevented) {
+                  ta.style.overflowY = 'auto';
+                } else {
+                  ta.style.height = mirrorHeight + 'px';
+                }
               }
 
               // small delay to prevent an infinite loop
