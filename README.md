@@ -5,6 +5,17 @@ Elastic (autosize) textareas for AngularJS, without jQuery dependency.
 
 [See it in action](http://monospaced.github.io/angular-elastic).
 
+Note: height animation is made using some CSS. For instance:
+
+``` css
+textarea {
+    -webkit-transition: height 50ms ease-in-out;
+    -moz-transition: height 50ms ease-in-out;
+    -o-transition: height 50ms ease-in-out;
+    transition: height 50ms ease-in-out;
+}
+```
+
 Usage
 -----
 
