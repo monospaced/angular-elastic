@@ -137,7 +137,7 @@ angular.module('monospaced.elastic', [])
             if (!active) {
               active = true;
 
-              mirror.value = ta.value + append; // optional whitespace to improve animation
+              mirror.value = (ta.value || $ta.attr('placeholder')) + append; // optional whitespace to improve animation
               mirror.style.overflowY = ta.style.overflowY;
 
               taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
