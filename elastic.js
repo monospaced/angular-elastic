@@ -59,23 +59,10 @@ angular.module('monospaced.elastic', [])
               mirror = $mirror[0],
               taStyle = getComputedStyle(ta),
               resize = taStyle.getPropertyValue('resize'),
-              borderBox = taStyle.getPropertyValue('box-sizing') === 'border-box' ||
-                          taStyle.getPropertyValue('-moz-box-sizing') === 'border-box' ||
-                          taStyle.getPropertyValue('-webkit-box-sizing') === 'border-box',
-              boxOuter = !borderBox ? {width: 0, height: 0} : {
-                            width:  parseInt(taStyle.getPropertyValue('border-right-width'), 10) +
-                                    parseInt(taStyle.getPropertyValue('padding-right'), 10) +
-                                    parseInt(taStyle.getPropertyValue('padding-left'), 10) +
-                                    parseInt(taStyle.getPropertyValue('border-left-width'), 10),
-                            height: parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
-                                    parseInt(taStyle.getPropertyValue('padding-top'), 10) +
-                                    parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
-                                    parseInt(taStyle.getPropertyValue('border-bottom-width'), 10)
-                          },
-              minHeightValue = parseInt(taStyle.getPropertyValue('min-height'), 10),
-              heightValue = parseInt(taStyle.getPropertyValue('height'), 10),
-              minHeight = Math.max(minHeightValue, heightValue) - boxOuter.height,
-              maxHeight = parseInt(taStyle.getPropertyValue('max-height'), 10),
+              boxOuterWidth = 0,
+              boxOuterHeight = 0,
+              minHeight = 0,
+              maxHeight = 0,
               mirrored,
               active,
               copyStyle = ['font-family',
@@ -93,8 +80,31 @@ angular.module('monospaced.elastic', [])
             return;
           }
 
-          // Opera returns max-height of -1 if not set
-          maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
+          function updateBoxSizeAndMinMaxHeight() {
+            var borderBox = taStyle.getPropertyValue('box-sizing') === 'border-box' ||
+                            taStyle.getPropertyValue('-moz-box-sizing') === 'border-box' ||
+                            taStyle.getPropertyValue('-webkit-box-sizing') === 'border-box';
+            var minHeightValue = parseInt(taStyle.getPropertyValue('min-height'), 10);
+            var heightValue = parseInt(taStyle.getPropertyValue('height'), 10);
+
+            boxOuterWidth = !borderBox ? 0 :   parseInt(taStyle.getPropertyValue('border-right-width'), 10) +
+                                               parseInt(taStyle.getPropertyValue('padding-right'), 10) +
+                                               parseInt(taStyle.getPropertyValue('padding-left'), 10) +
+                                               parseInt(taStyle.getPropertyValue('border-left-width'), 10);
+
+            boxOuterHeight = !borderBox ? 0 :  parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
+                                               parseInt(taStyle.getPropertyValue('padding-top'), 10) +
+                                               parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
+                                               parseInt(taStyle.getPropertyValue('border-bottom-width'), 10);
+
+            minHeight = Math.max(minHeightValue, heightValue) - boxOuterHeight;
+            maxHeight = parseInt(taStyle.getPropertyValue('max-height'), 10);
+
+            // Opera returns max-height of -1 if not set
+            maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
+          }
+
+          updateBoxSizeAndMinMaxHeight();
 
           // append mirror to the DOM
           if (mirror.parentNode !== document.body) {
@@ -147,7 +157,7 @@ angular.module('monospaced.elastic', [])
               // ensure getComputedStyle has returned a readable 'used value' pixel width
               if (taComputedStyleWidth.substr(taComputedStyleWidth.length - 2, 2) === 'px') {
                 // update mirror width in case the textarea width has changed
-                width = parseInt(taComputedStyleWidth, 10) - boxOuter.width;
+                width = parseInt(taComputedStyleWidth, 10) - boxOuterWidth;
                 mirror.style.width = width + 'px';
               }
 
@@ -159,7 +169,7 @@ angular.module('monospaced.elastic', [])
               } else if (mirrorHeight < minHeight) {
                 mirrorHeight = minHeight;
               }
-              mirrorHeight += boxOuter.height;
+              mirrorHeight += boxOuterHeight;
               ta.style.overflowY = overflow || 'hidden';
 
               if (taHeight !== mirrorHeight) {
@@ -201,6 +211,7 @@ angular.module('monospaced.elastic', [])
           });
 
           scope.$on('elastic:adjust', function() {
+            updateBoxSizeAndMinMaxHeight();
             initMirror();
             forceAdjust();
           });
