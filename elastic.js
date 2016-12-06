@@ -22,9 +22,8 @@ angular.module('monospaced.elastic', [])
       'use strict';
 
       return {
-        require: 'ngModel',
         restrict: 'A, C',
-        link: function(scope, element, attrs, ngModel) {
+        link: function(scope, element, attrs) {
 
           // cache a reference to the DOM element
           var ta = element[0],
@@ -195,7 +194,7 @@ angular.module('monospaced.elastic', [])
           $win.bind('resize', forceAdjust);
 
           scope.$watch(function() {
-            return ngModel.$modelValue;
+            return ta.value;
           }, function(newValue) {
             forceAdjust();
           });
