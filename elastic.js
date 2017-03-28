@@ -86,6 +86,8 @@ angular.module('monospaced.elastic', [])
                            'line-height',
                            'text-transform',
                            'word-spacing',
+                           'word-wrap',
+                           'word-break',
                            'text-indent'];
 
           // exit if elastic already applied (or is the mirror element)
@@ -127,7 +129,9 @@ angular.module('monospaced.elastic', [])
                 taComputedStyleWidth,
                 mirrorHeight,
                 width,
-                overflow;
+                overflow,
+                ngHided,
+                jqHided;
 
             if (mirrored !== ta) {
               initMirror();
@@ -149,6 +153,14 @@ angular.module('monospaced.elastic', [])
                 // update mirror width in case the textarea width has changed
                 width = parseInt(taComputedStyleWidth, 10) - boxOuter.width;
                 mirror.style.width = width + 'px';
+              } else if (element.jquery) {
+                ngHided = element.hasClass('ng-hide');
+                jqHided = !ngHided && element.css('display') === 'none';
+                if (ngHided) { element.removeClass('ng-hide'); }
+                if (jqHided) { element.show(); }
+                mirror.style.width = element.width() + 'px';
+                if (ngHided) { element.addClass('ng-hide') }
+                if (jqHided) { element.hide(); }
               }
 
               mirrorHeight = mirror.scrollHeight;
