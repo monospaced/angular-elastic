@@ -92,20 +92,23 @@ angular.module('monospaced.elastic', [])
           if ($ta.data('elastic')) {
             return;
           }
+          $timeout(function(){
+            maxHeight = parseInt(taStyle.getPropertyValue('max-height'), 10);
 
-          // Opera returns max-height of -1 if not set
-          maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
+            // Opera returns max-height of -1 if not set
+            maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
-          // append mirror to the DOM
-          if (mirror.parentNode !== document.body) {
-            angular.element(document.body).append(mirror);
-          }
+            // append mirror to the DOM
+            if (mirror.parentNode !== document.body) {
+              angular.element(document.body).append(mirror);
+            }
 
-          // set resize and apply elastic
-          $ta.css({
-            'resize': (resize === 'none' || resize === 'vertical') ? 'none' : 'horizontal'
-          }).data('elastic', true);
-
+            // set resize and apply elastic
+            $ta.css({
+              'resize': (resize === 'none' || resize === 'vertical') ? 'none' : 'horizontal'
+            }).data('elastic', true);
+            initialise();
+          });
           /*
            * methods
            */
@@ -183,38 +186,39 @@ angular.module('monospaced.elastic', [])
           /*
            * initialise
            */
+          function initialise() {
+            // listen
+            if ('onpropertychange' in ta && 'oninput' in ta) {
+              // IE9
+              ta['oninput'] = ta.onkeyup = adjust;
+            } else {
+              ta['oninput'] = adjust;
+            }
 
-          // listen
-          if ('onpropertychange' in ta && 'oninput' in ta) {
-            // IE9
-            ta['oninput'] = ta.onkeyup = adjust;
-          } else {
-            ta['oninput'] = adjust;
+            $win.bind('resize', forceAdjust);
+
+            scope.$watch(function() {
+              return ngModel.$modelValue;
+            }, function(newValue) {
+              forceAdjust();
+            });
+
+            scope.$on('elastic:adjust', function() {
+              initMirror();
+              forceAdjust();
+            });
+
+            $timeout(adjust, 0, false);
+
+            /*
+             * destroy
+             */
+
+            scope.$on('$destroy', function() {
+              $mirror.remove();
+              $win.unbind('resize', forceAdjust);
+            });
           }
-
-          $win.bind('resize', forceAdjust);
-
-          scope.$watch(function() {
-            return ngModel.$modelValue;
-          }, function(newValue) {
-            forceAdjust();
-          });
-
-          scope.$on('elastic:adjust', function() {
-            initMirror();
-            forceAdjust();
-          });
-
-          $timeout(adjust, 0, false);
-
-          /*
-           * destroy
-           */
-
-          scope.$on('$destroy', function() {
-            $mirror.remove();
-            $win.unbind('resize', forceAdjust);
-          });
         }
       };
     }
