@@ -24,7 +24,9 @@ angular.module('monospaced.elastic', [])
       return {
         require: 'ngModel',
         restrict: 'A, C',
-        link: function(scope, element, attrs, ngModel) {
+        scope: {
+          msdElasticChange: '&'
+        }, link: function(scope, element, attrs, ngModel) {
 
           // cache a reference to the DOM element
           var ta = element[0],
@@ -164,7 +166,9 @@ angular.module('monospaced.elastic', [])
 
               if (taHeight !== mirrorHeight) {
                 scope.$emit('elastic:resize', $ta, taHeight, mirrorHeight);
+                var trigger = (ta.style.height != mirrorHeight + 'px');
                 ta.style.height = mirrorHeight + 'px';
+                if (trigger) scope.msdElasticChange();
               }
 
               // small delay to prevent an infinite loop

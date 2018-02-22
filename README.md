@@ -45,9 +45,9 @@ the directive also emits an `elastic:resize` event which you can listen for
 Single line textareas
 --------------
 
-Set the `rows` attribute to `1`, as browsers default to `2`.
+Set the `rows` attribute to `1`, as browsers default to `2`. The `callback()` is called every time the `textarea`'s height updates.
 
-    <textarea rows="1" msd-elastic ng-model="foo">
+    <textarea rows="1" msd-elastic msd-elastic-change="callback()" ng-model="foo">
       ...
     </textarea>
 
