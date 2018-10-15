@@ -53,6 +53,7 @@ angular.module('monospaced.elastic', [])
                                 'left: 0; overflow: hidden; -webkit-box-sizing: content-box;' +
                                 '-moz-box-sizing: content-box; box-sizing: content-box;' +
                                 'min-height: 0 !important; height: 0 !important; padding: 0;' +
+                                'visibility: hidden;' +  // fix FF60+ scroll bug
                                 'word-wrap: break-word; border: 0;',
               $mirror = angular.element('<textarea aria-hidden="true" tabindex="-1" ' +
                                         'style="' + mirrorInitStyle + '"/>').data('elastic', true),
