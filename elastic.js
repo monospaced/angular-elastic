@@ -17,8 +17,8 @@ angular.module('monospaced.elastic', [])
   })
 
   .directive('msdElastic', [
-    '$timeout', '$window', 'msdElasticConfig',
-    function($timeout, $window, config) {
+    '$document', '$timeout', '$window', 'msdElasticConfig',
+    function($document, $timeout, $window, config) {
       'use strict';
 
       return {
@@ -97,8 +97,8 @@ angular.module('monospaced.elastic', [])
           maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
           // append mirror to the DOM
-          if (mirror.parentNode !== document.body) {
-            angular.element(document.body).append(mirror);
+          if (mirror.parentNode !== $document[0].body) {
+            angular.element($document[0].body).append(mirror);
           }
 
           // set resize and apply elastic
