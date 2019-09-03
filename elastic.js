@@ -57,7 +57,7 @@ angular.module('monospaced.elastic', [])
               $mirror = angular.element('<textarea aria-hidden="true" tabindex="-1" ' +
                                         'style="' + mirrorInitStyle + '"/>').data('elastic', true),
               mirror = $mirror[0],
-              taStyle = getComputedStyle(ta),
+              taStyle = $window.getComputedStyle(ta),
               resize = taStyle.getPropertyValue('resize'),
               borderBox = taStyle.getPropertyValue('box-sizing') === 'border-box' ||
                           taStyle.getPropertyValue('-moz-box-sizing') === 'border-box' ||
@@ -115,7 +115,7 @@ angular.module('monospaced.elastic', [])
 
             mirrored = ta;
             // copy the essential styles from the textarea to the mirror
-            taStyle = getComputedStyle(ta);
+            taStyle = $window.getComputedStyle(ta);
             angular.forEach(copyStyle, function(val) {
               mirrorStyle += val + ':' + taStyle.getPropertyValue(val) + ';';
             });
@@ -142,7 +142,7 @@ angular.module('monospaced.elastic', [])
 
               taHeight = ta.style.height === '' ? 'auto' : parseInt(ta.style.height, 10);
 
-              taComputedStyleWidth = getComputedStyle(ta).getPropertyValue('width');
+              taComputedStyleWidth = $window.getComputedStyle(ta).getPropertyValue('width');
 
               // ensure getComputedStyle has returned a readable 'used value' pixel width
               if (taComputedStyleWidth.substr(taComputedStyleWidth.length - 2, 2) === 'px') {
