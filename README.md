@@ -20,7 +20,7 @@ as class
       ...
     </textarea>
 
-optionally append whitespace to the end of the height calculation (an extra newline improves the apperance when animating)
+optionally append whitespace to the end of the height calculation (an extra newline improves the appearance when animating)
 
     <textarea msd-elastic="\n" ng-model="foo">
       ...
