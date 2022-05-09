@@ -1,5 +1,9 @@
-Angular Elastic
+[DEPRECATED] Angular Elastic
 ===============
+
+**Since [AngularJS support has been discontinued](https://blog.angular.io/discontinued-long-term-support-for-angularjs-cc066b82e65a) this package is deprecated and no longer maintained.**
+
+---
 
 Elastic (autosize) textareas for AngularJS, without jQuery dependency.
 
